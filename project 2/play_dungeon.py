@@ -106,13 +106,13 @@ def main(args: argparse.Namespace):
 
         fetch_tracked_call_count(DungeonGame.is_terminal) # Clear the call counter
         
-        # if this is the turn of the first player, increment the step counter
-        if turn == 0: step += 1
-
         turn = game.get_turn(state) # get the current turn
         agent = agents[turn] # get the agent that will play the current turn
         action = agent.act(game, state) # Request an action from the agent
         
+        # if this is the turn of the first player, increment the step counter
+        if turn == 0: step += 1
+
         # Get the number of explored nodes, if the current agent is a search agent
         if isinstance(agent, SearchAgent):
             print("Explored Nodes:", fetch_tracked_call_count(DungeonGame.is_terminal))

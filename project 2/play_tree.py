@@ -26,11 +26,11 @@ def create_agent(agent_type: str, heuristic_type: str):
             while True:
                 if possible_actions:
                     action_prompt = "Possible actions:\n"
-                    action_prompt += ''.join(f'{action}' for action in possible_actions)
+                    action_prompt += ', '.join(f'{action}' for action in possible_actions)
                     print(action_prompt)
                 else:
                     print("No possible actions. Press Ctrl+C to exit.")
-                action = input("Choose an action: ").strip()
+                action = input("Choose an action: ").strip().upper()
                 if action in possible_actions:
                     return action
                 print("Invalid Action")
@@ -81,13 +81,13 @@ def main(args: argparse.Namespace):
         
         fetch_recorded_calls(TreeGame.is_terminal) # Clear the recorded calls
         
-        # if this is the turn of the first player, increment the step counter
-        if turn == 0: step += 1
-        
         turn = game.get_turn(state) # get the current turn
         agent = agents[turn] # get the agent that will play the current turn
         action = agent.act(game, state) # Request an action from the agent
         
+        # if this is the turn of the first player, increment the step counter
+        if turn == 0: step += 1
+
         # Retrieve the traversed nodes, if the current agent is a search agent
         if isinstance(agent, SearchAgent):
             explored_nodes = [call["args"][1].name for call in list(fetch_recorded_calls(TreeGame.is_terminal))]
